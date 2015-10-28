@@ -12,10 +12,20 @@
 # Introduction
 
 Dockerfile to build a shellinabox container image.
+I fork the ubuntu version 2.14-1(sspreitzer/shellinabox:latest) to upgrade to version 2.18 and adpate it to centos container
+
+I put these additionnal packages on there latest version for centos latest :
+
+* tmux
+* resurrect
+* git
+* tig
+* vim
+* todo.txt version 2.10
 
 # Version
 
-Current Version: **2.14-1**
+Current Version: **2.18**
 
 # Usage
 
@@ -26,6 +36,7 @@ Pull the latest image, which is *HEAD* of the git repository.
 ```bash
 docker pull sspreitzer/shellinabox:latest
 ```
+
 
 ## Run The Image
 
@@ -59,4 +70,4 @@ docker run -p 4200:4200 -e SIAB_PASSWORD=xyz678abc -e SIAB_SUDO=true sspreitzer/
 
  * https://github.com/sameersbn/docker-gitlab/blob/master/README.md
  * https://github.com/spali/docker-shellinabox
-
+ * https://github.com/sspreitzer/docker-shellinabox

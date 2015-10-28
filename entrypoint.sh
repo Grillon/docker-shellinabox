@@ -1,4 +1,7 @@
 #!/bin/bash
+#Fork of entrypoint.sh of sspreitzer https://github.com/sspreitzer/docker-shellinabox
+#I did it to adapat to centos. The script is well done :-)
+
 set -e
 
 hex()
@@ -7,14 +10,14 @@ hex()
 }
 
 echo "Preparing container .."
-COMMAND="/usr/bin/shellinaboxd --debug --no-beep -u shellinabox -g shellinabox -c /var/lib/shellinabox -p ${SIAB_PORT} --user-css \"${SIAB_USERCSS}\""
+COMMAND="/usr/sbin/shellinaboxd --debug --no-beep -u shellinabox -g shellinabox -c /var/lib/shellinabox -p ${SIAB_PORT} --user-css \"${SIAB_USERCSS}\""
 
 if [ "$SIAB_PKGS" != "none" ]; then
 	set +e
-	/usr/bin/apt-get update
-	/usr/bin/apt-get install -y $SIAB_PKGS
-	/usr/bin/apt-get clean
-	/bin/rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+	/usr/bin/yum update
+	/usr/bin/yum install -y $SIAB_PKGS
+	/usr/bin/yum clean all
+	/bin/rm -rf /tmp/* /var/tmp/*
 	set -e
 fi
 
@@ -25,7 +28,7 @@ fi
 if [ "${SIAB_ADDUSER}" == "true" ]; then
 	sudo=""
 	if [ "${SIAB_SUDO}" == "true" ]; then
-		sudo="-G sudo"
+		sudo="-G wheel"
 	fi
 	/usr/sbin/groupadd -g ${SIAB_GROUPID} ${SIAB_GROUP}
 	/usr/sbin/useradd -u ${SIAB_USERID} -g ${SIAB_GROUPID} -s ${SIAB_SHELL} -d ${SIAB_HOME} -m ${sudo} ${SIAB_USER}
@@ -56,5 +59,5 @@ echo "Starting container .."
 if [ "$@" != "shellinabox" ]; then
 	exec "$@"
 else
-	exec /usr/bin/supervisord
+	exec /usr/bin/supervisord -c /etc/supervisor/conf.d/shellinabox.conf
 fi
