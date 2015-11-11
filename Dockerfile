@@ -6,6 +6,7 @@ MAINTAINER Thierry VOGEL <thierry.vogel@moncourriel.eu>
 
 ENV VERSION 2.18
 
+RUN sed -i '/nodocs/d' /etc/yum.conf
 RUN yum -y update && yum -y install openssl curl openssh-client sudo vim tmux  git
 RUN yum -y install epel-release && yum -y install supervisor shellinabox 
 
